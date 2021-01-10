@@ -2,4 +2,6 @@
 **/.bloop
 **/.metals
 **/.vscode
+**/.bsp
+**/.idea
 .DS_Store
