@@ -10,11 +10,13 @@ class Routes private(basePath: String)(implicit system: ActorSystem[Nothing]) ex
 
   private val routes = {
     pathPrefix(basePath) {
-      path("hello") {
-        get {
+      path("job") {
+        post {
           complete(HttpEntity(ContentTypes.`application/json`, "{\"value\": Hello}"))
         }
       }
+      path("health")(get(complete("health, Not yet implemented!")))
+      path("stats")(get(complete("stats, Not yet implemented!")))
     }
   }
 
