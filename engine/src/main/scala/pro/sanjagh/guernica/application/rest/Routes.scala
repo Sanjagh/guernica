@@ -6,7 +6,7 @@ import akka.http.scaladsl.server.Directives._
 
 import scala.concurrent.Future
 
-class Routes(basePath: String)(implicit system: ActorSystem[Nothing]) extends (HttpRequest => Future[HttpResponse]) {
+class Routes private(basePath: String)(implicit system: ActorSystem[Nothing]) extends (HttpRequest => Future[HttpResponse]) {
 
   private val routes = {
     pathPrefix(basePath) {
@@ -22,5 +22,8 @@ class Routes(basePath: String)(implicit system: ActorSystem[Nothing]) extends (H
 }
 
 object Routes {
-  def apply(basePath: String)(implicit system: ActorSystem[Nothing]): Routes = new Routes(basePath)
+  def apply(basePath: String)(implicit system: ActorSystem[Nothing]): Option[Routes] = basePath match {
+    case null | "" => None
+    case _ => Some(new Routes(basePath))
+  }
 }

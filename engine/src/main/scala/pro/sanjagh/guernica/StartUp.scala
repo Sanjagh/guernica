@@ -15,7 +15,10 @@ object StartUp extends App {
   private implicit val executionContext: ExecutionContextExecutor = system.executionContext
   private implicit val config: Config = system.settings.config
 
-  private val httpServer: HttpServer = HttpServer(Routes(config.getString("guernica.api.basePath")))
+  private val httpServer = for {
+    routes <- Routes(config.getString("guernica.api.basePath"))
+    server <- HttpServer(routes)
+  } yield server
 
   printBanner()
   startServer()
@@ -27,7 +30,10 @@ object StartUp extends App {
     .print()
 
   private def startServer(): Unit = {
-    val bindingFuture = httpServer.start(config.getString("guernica.api.host"))
+    val bindingFuture = httpServer
+      .fold(throw new RuntimeException("Could not create server")) {
+        _.start(config.getString("guernica.api.host"))
+      }
 
     StdIn.readLine()
     bindingFuture

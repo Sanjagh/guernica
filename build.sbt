@@ -12,5 +12,6 @@ lazy val engine = (project in file("engine"))
   .settings(
     name := "engine",
     libraryDependencies ++= Seq(Akka.actor, Akka.stream, Akka.http, figlet),
-    libraryDependencies += scalaTest % Test,
+    libraryDependencies ++= Akka.test,
+    libraryDependencies += scalaTest,
   )
