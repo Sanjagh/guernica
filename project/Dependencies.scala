@@ -2,6 +2,8 @@ import sbt._
 
 object Dependencies {
   lazy val scalaTest = "org.scalatest" %% "scalatest" % "3.2.2"
+  lazy val figlet = "com.colofabrix.scala" %% "figlet4s-core" % "0.2.0"
+
 
   object Akka {
     private val AkkaVersion = "2.6.8"

@@ -6,11 +6,15 @@ import akka.http.scaladsl.server.Directives._
 
 import scala.concurrent.Future
 
-class Routes(implicit system: ActorSystem[Nothing]) extends (HttpRequest => Future[HttpResponse]) {
+class Routes(basePath: String)(implicit system: ActorSystem[Nothing]) extends (HttpRequest => Future[HttpResponse]) {
 
-  private val routes = path("hello") {
-    get {
-      complete(HttpEntity(ContentTypes.`application/json`, "{\"value\": Hello}"))
+  private val routes = {
+    pathPrefix(basePath) {
+      path("hello") {
+        get {
+          complete(HttpEntity(ContentTypes.`application/json`, "{\"value\": Hello}"))
+        }
+      }
     }
   }
 
@@ -18,5 +22,5 @@ class Routes(implicit system: ActorSystem[Nothing]) extends (HttpRequest => Futu
 }
 
 object Routes {
-  def apply()(implicit system: ActorSystem[Nothing]): Routes = new Routes
+  def apply(basePath: String)(implicit system: ActorSystem[Nothing]): Routes = new Routes(basePath)
 }
