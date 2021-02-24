@@ -1,6 +1,6 @@
-package pro.sanjagh.guernica.application.model
+package pro.sanjagh.guernica.domain
 
-sealed trait Action
+sealed trait Action extends Product with Serializable
 object Action {
   final case class Degree private (value: Double) extends AnyVal
   final case class Rect private (width: Double, height: Double)
@@ -11,5 +11,3 @@ object Action {
   final case class Resize(rect: Rect) extends Action
   final case class CropAndResize(cropRect: Rect, resizeRect: Rect) extends Action
 }
-
-class NewJobRequest(actions: Action, inputBucket: String, outputBucket: String)

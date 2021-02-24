@@ -10,6 +10,9 @@ import scala.concurrent.ExecutionContextExecutor
 import scala.io.StdIn
 import scala.util.{Failure, Success}
 
+/**
+ * Starting point of the application.
+ */
 object StartUp extends App {
   private implicit val system: ActorSystem[Nothing] = ActorSystem[Nothing](Behaviors.empty, "guernica")
   private implicit val executionContext: ExecutionContextExecutor = system.executionContext

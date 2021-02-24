@@ -10,6 +10,12 @@ class HttpServer private(routes: Routes)(
   implicit actorSystem: ActorSystem[Nothing],
   executionContext: ExecutionContextExecutor
 ) {
+
+  /**
+   * StartUp http server.
+   *
+   * @param host server host
+   */
   def start(host: String): Future[ServerBinding] = Http().newServerAt(host, -1).bind(routes)
     .map { b =>
       println(s"Server online at ${b.localAddress}\nPress RETURN to stop...")
