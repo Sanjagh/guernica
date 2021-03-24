@@ -3,11 +3,11 @@ import sbt._
 object Dependencies {
   lazy val scalaTest = "org.scalatest" %% "scalatest" % "3.2.2" % Test
   lazy val figlet = "com.colofabrix.scala" %% "figlet4s-core" % "0.2.0"
-
+  lazy val slf4j = "org.slf4j" % "slf4j-simple" % "1.7.30" % Test
 
   object Akka {
     private val AkkaVersion = "2.6.8"
-    private val AkkaHttpVersion = "10.2.2"
+    private val AkkaHttpVersion = "10.2.4"
 
     lazy val actor = "com.typesafe.akka" %% "akka-actor-typed" % AkkaVersion
     lazy val stream = "com.typesafe.akka" %% "akka-stream" % AkkaVersion

@@ -14,4 +14,5 @@ lazy val engine = (project in file("engine"))
     libraryDependencies ++= Seq(Akka.actor, Akka.stream, Akka.http, Akka.json, figlet),
     libraryDependencies ++= Akka.test,
     libraryDependencies += scalaTest,
+    libraryDependencies += slf4j,
   )

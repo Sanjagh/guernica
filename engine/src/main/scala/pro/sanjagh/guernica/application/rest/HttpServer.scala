@@ -12,7 +12,7 @@ class HttpServer private(routes: Routes)(
 ) {
 
   /**
-   * StartUp http server.
+   * StartUp http server. -1 means to read port from application.conf.
    *
    * @param host server host
    */
