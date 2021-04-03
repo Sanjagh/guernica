@@ -21,19 +21,17 @@ trait JsonSupport extends SprayJsonSupport with DefaultJsonProtocol {
   implicit val rotateFormat: RootJsonFormat[Rotate] = jsonFormat1(Rotate)
   implicit val cropFormat: RootJsonFormat[Crop] = jsonFormat1(Crop)
   implicit val resizeFormat: RootJsonFormat[Resize] = jsonFormat1(Resize)
-  implicit val cropAndResizeFormat: RootJsonFormat[CropAndResize] = jsonFormat2(
-    CropAndResize
-  )
+  implicit val cropAndResizeFormat: RootJsonFormat[CropResize] = jsonFormat1(CropResize)
 
   implicit val actionFormat: RootJsonFormat[Action] =
     new RootJsonFormat[Action] {
       override def write(obj: Action): JsValue =
         JsObject((obj match {
-          case Optimize                     => JsObject()
-          case rotate: Rotate               => rotate.toJson
-          case crop: Crop                   => crop.toJson
-          case resize: Resize               => resize.toJson
-          case cropAndResize: CropAndResize => cropAndResize.toJson
+          case Optimize                  => JsObject()
+          case rotate: Rotate            => rotate.toJson
+          case crop: Crop                => crop.toJson
+          case resize: Resize            => resize.toJson
+          case cropAndResize: CropResize => cropAndResize.toJson
         }).asJsObject.fields + ("type" -> JsString(obj.productPrefix)))
 
       override def read(json: JsValue): Action =
@@ -41,7 +39,7 @@ trait JsonSupport extends SprayJsonSupport with DefaultJsonProtocol {
           case Seq(JsString("Rotate"))        => json.convertTo[Rotate]
           case Seq(JsString("Crop"))          => json.convertTo[Crop]
           case Seq(JsString("Resize"))        => json.convertTo[Resize]
-          case Seq(JsString("CropAndResize")) => json.convertTo[CropAndResize]
+          case Seq(JsString("CropAndResize")) => json.convertTo[CropResize]
         }
     }
 }
