@@ -13,10 +13,12 @@ object Dependencies {
     lazy val stream = "com.typesafe.akka" %% "akka-stream" % AkkaVersion
     lazy val http = "com.typesafe.akka" %% "akka-http" % AkkaHttpVersion
     lazy val json = "com.typesafe.akka" %% "akka-http-spray-json" % AkkaHttpVersion
+    lazy val all = Seq(actor, stream, http, json)
 
-    lazy val test = Seq("com.typesafe.akka" %% "akka-actor-testkit-typed" % AkkaVersion % Test,
+    lazy val test = Seq(
+      "com.typesafe.akka" %% "akka-actor-testkit-typed" % AkkaVersion % Test,
       "com.typesafe.akka" %% "akka-stream-testkit" % AkkaVersion % Test,
-      "com.typesafe.akka" %% "akka-http-testkit" % AkkaHttpVersion % Test)
+      "com.typesafe.akka" %% "akka-http-testkit" % AkkaHttpVersion % Test
+    )
   }
-
 }
