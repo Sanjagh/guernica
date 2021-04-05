@@ -52,39 +52,55 @@ object Action {
   /** Factory method for creating [[Degree]] instance.
     *
     * @param value value of the degree. could not be negative
+    * @return one of [[Exception.NegativeDegreeException]] (if value be negative) or [[Degree]]
     */
-  // TODO : validate value. return Option or Either.
-  def degree(value: Double): Degree = Degree(value)
+  def degree(value: Double): Either[Exception, Degree] =
+    if (value < 0) Left(Exception.NegativeDegreeException) else Right(Degree(value))
 
   /** Factory method for creating [[Rect]] instance.
     *
     * @param width width of the rect. could be positive
     * @param height height of the rect. could be positive
+    * @return one of [[Exception.NegativeWidthException]] or [[Exception.NegativeHeightException]]
+    *         (if width or height be negative) or [[Rect]]
     */
-  // TODO : validate width and height. return Option or Either.
-  def rect(width: Double, height: Double): Rect = Rect(width, height)
+  def rect(width: Double, height: Double): Either[Exception, Rect] =
+    if (width < 0) Left(Exception.NegativeWidthException)
+    else if (height < 0) Left(Exception.NegativeHeightException)
+    else Right(Rect(width, height))
 
   val optimize: Optimize.type = Optimize
 
   /** Creates new [[Rotate]] instance.
     *
-    * @param degree degree of the rotation. zero value has no effects, so will ignored
+    * @param degree of the rotation. zero value does not make any sense and will be ignored
     */
-  // TODO : what is happen to zero degree?
-  def rotate(degree: Double): Rotate = Rotate(Action.degree(degree))
+  def rotate(degree: Double): Either[Exception, Rotate] = Action.degree(degree).map(Rotate)
 
   /** Creates new [[Resize]] instance.
+    *
+    * @param width of the image. zero value does not make any sense and will be ignored
+    * @param height of the image. zero value does not make any sense and will be ignored
     */
-  // TODO : rect with zero width or zero height don't make any sense!
-  def resize(width: Double, height: Double): Resize = Resize(rect(width, height))
+  def resize(width: Double, height: Double): Either[Exception, Resize] =
+    rect(width, height).map(Resize)
 
   /** Creates new [[Crop]] instance.
     */
-  // TODO : rect with zero width or zero height don't make any sense!
-  def crop(width: Double, height: Double): Crop = Crop(rect(width, height))
+  def crop(width: Double, height: Double): Either[Exception, Crop] = rect(width, height).map(Crop)
 
   /** Creates new [[CropResize]] instance.
     */
-  // TODO : rect with zero width or zero height don't make any sense!
-  def cropResize(width: Double, height: Double): CropResize = CropResize(rect(width, height))
+  def cropResize(width: Double, height: Double): Either[Exception, CropResize] =
+    rect(width, height).map(CropResize)
+
+  sealed trait Exception extends RuntimeException
+
+  object Exception {
+    case object NegativeDegreeException extends Exception
+
+    case object NegativeWidthException extends Exception
+
+    case object NegativeHeightException extends Exception
+  }
 }
