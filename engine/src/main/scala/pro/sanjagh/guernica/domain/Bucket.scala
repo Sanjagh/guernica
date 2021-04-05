@@ -23,13 +23,16 @@ object Bucket {
     *
     * @param address non-empty and nonNull string is S3 format
     */
-  // TODO : Could I validate S3 address ? or I should trust on user ?
-  def input(address: String): Input = Input(address)
+  def input(address: String): Either[InvalidAddressException.type, Input] =
+    if (address == null || address.isBlank) Left(InvalidAddressException) else Right(Input(address))
 
   /** Factory method to create [[Output]] instance.
     *
     * @param address non-empty and nonNull string is S3 format
     */
-  // TODO : Could I validate S3 address ?
-  def output(address: String): Output = Output(address)
+  def output(address: String): Either[InvalidAddressException.type, Output] =
+    if (address == null || address.isBlank) Left(InvalidAddressException)
+    else Right(Output(address))
+
+  case object InvalidAddressException extends Exception
 }
