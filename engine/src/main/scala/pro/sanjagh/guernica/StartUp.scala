@@ -10,11 +10,11 @@ import scala.concurrent.ExecutionContextExecutor
 import scala.io.StdIn
 import scala.util.{Failure, Success}
 
-/**
- * Starting point of the application.
- */
+/** Starting point of the application.
+  */
 object StartUp extends App {
-  private implicit val system: ActorSystem[Nothing] = ActorSystem[Nothing](Behaviors.empty, "guernica")
+  private implicit val system: ActorSystem[Nothing] =
+    ActorSystem[Nothing](Behaviors.empty, "guernica")
   private implicit val executionContext: ExecutionContextExecutor = system.executionContext
   private implicit val config: Config = system.settings.config
 
@@ -43,7 +43,7 @@ object StartUp extends App {
       .flatMap(_.unbind())
       .onComplete {
         case Failure(exception) => exception.printStackTrace()
-        case Success(_) => system.terminate()
+        case Success(_)         => system.terminate()
       }
   }
 }
