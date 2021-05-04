@@ -23,7 +23,11 @@ object GuernicaException {
     */
   class InvalidArgumentException(
       val title: String,
-      val `type`: String = "sanjagh://guernica/InvalidArgumentException",
+      val subtype: Option[String] = None,
       val description: Option[String] = None
-  ) extends GuernicaException
+  ) extends GuernicaException {
+    override val `type`: String = Some("sanjagh://guernica/InvalidArgument").flatMap { base =>
+      subtype.map(s => s"$base/$s")
+    }.get
+  }
 }

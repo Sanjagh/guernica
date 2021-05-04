@@ -52,9 +52,18 @@ object Action extends ActionFactory {
   import GuernicaException._
 
   case object NegativeDegreeException
-      extends InvalidArgumentException("Degree could not be negative.")
+      extends InvalidArgumentException(
+        title = "Degree could not be negative.",
+        subtype = Some("NegativeDegreeException/Action")
+      )
   case object NegativeWidthException
-      extends InvalidArgumentException("Width could not be negative.")
+      extends InvalidArgumentException(
+        title = "Width could not be negative.",
+        subtype = Some("NegativeWidthException/Action")
+      )
   case object NegativeHeightException
-      extends InvalidArgumentException("Height could not be negative.")
+      extends InvalidArgumentException(
+        title = "Height could not be negative.",
+        subtype = Some("NegativeHeightException/Action")
+      )
 }
