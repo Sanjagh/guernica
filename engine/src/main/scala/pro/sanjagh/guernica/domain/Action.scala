@@ -6,7 +6,7 @@ package pro.sanjagh.guernica.domain
   * [[Action.Optimize]] will executed on every image automatically.
   */
 sealed trait Action extends Product with Serializable
-object Action {
+object Action extends ActionFactory {
 
   /** ValueClass for degree. like ration degree.
     */
@@ -49,58 +49,12 @@ object Action {
     */
   final case class CropResize private (resizeRect: Rect) extends Action
 
-  /** Factory method for creating [[Degree]] instance.
-    *
-    * @param value value of the degree. could not be negative
-    * @return one of [[Exception.NegativeDegreeException]] (if value be negative) or [[Degree]]
-    */
-  def degree(value: Double): Either[Exception, Degree] =
-    if (value < 0) Left(Exception.NegativeDegreeException) else Right(Degree(value))
+  import GuernicaException._
 
-  /** Factory method for creating [[Rect]] instance.
-    *
-    * @param width width of the rect. could be positive
-    * @param height height of the rect. could be positive
-    * @return one of [[Exception.NegativeWidthException]] or [[Exception.NegativeHeightException]]
-    *         (if width or height be negative) or [[Rect]]
-    */
-  def rect(width: Double, height: Double): Either[Exception, Rect] =
-    if (width < 0) Left(Exception.NegativeWidthException)
-    else if (height < 0) Left(Exception.NegativeHeightException)
-    else Right(Rect(width, height))
-
-  val optimize: Optimize.type = Optimize
-
-  /** Creates new [[Rotate]] instance.
-    *
-    * @param degree of the rotation. zero value does not make any sense and will be ignored
-    */
-  def rotate(degree: Double): Either[Exception, Rotate] = Action.degree(degree).map(Rotate)
-
-  /** Creates new [[Resize]] instance.
-    *
-    * @param width of the image. zero value does not make any sense and will be ignored
-    * @param height of the image. zero value does not make any sense and will be ignored
-    */
-  def resize(width: Double, height: Double): Either[Exception, Resize] =
-    rect(width, height).map(Resize)
-
-  /** Creates new [[Crop]] instance.
-    */
-  def crop(width: Double, height: Double): Either[Exception, Crop] = rect(width, height).map(Crop)
-
-  /** Creates new [[CropResize]] instance.
-    */
-  def cropResize(width: Double, height: Double): Either[Exception, CropResize] =
-    rect(width, height).map(CropResize)
-
-  sealed trait Exception extends RuntimeException
-
-  object Exception {
-    case object NegativeDegreeException extends Exception
-
-    case object NegativeWidthException extends Exception
-
-    case object NegativeHeightException extends Exception
-  }
+  case object NegativeDegreeException
+      extends InvalidArgumentException("Degree could not be negative.")
+  case object NegativeWidthException
+      extends InvalidArgumentException("Width could not be negative.")
+  case object NegativeHeightException
+      extends InvalidArgumentException("Height could not be negative.")
 }
