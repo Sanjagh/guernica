@@ -5,6 +5,7 @@ package pro.sanjagh.guernica.domain
 trait ActionFactory {
   import Action._
 
+  // TODO : Can convert degrees greater than 360 to (degree - 360).
   /** Factory method for creating [[Degree]] instance.
     *
     * @param value value of the degree. could not be negative
